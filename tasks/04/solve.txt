@@ -1,0 +1,36 @@
+ps -o '%c'
+ps -o comm
+
+ps -eo cmd --sort=start_time | head -n 11 | tail -n +2
+
+ps -eo pid,cmd --sort=-vsz | head -n 2 | tail -n 1
+ps -eo pid,cmd --sort=+vsz | tail -n 1
+ps -eo pid=,cmd= --sort=+vsize | head -n 1
+
+- //sorts from greates to smalles
++ //sorts from smallest to greatest
+
+ps -eo cmd= --sort=start_time | head -n 1
+
+ps -e -O size --sort=-sz | head
+
+ps -e -g root -o sz | awk 'BEGIN {sum=0} {sum+=$1} END {print sum}'
+
+ps -eo user=,comm= | sort | awk '$1 == user && $2 == "vim" {count++} count == 2 {print user; count++} $1 != user {user=$1; count=0}'
+
+ps -eo user=,comm= | sort | awk '$2 == "vim"' | sort | uniq -c | sed 's:^[[:space:]]*::' | awk '$1 >= 2 { print $2 }'
+
+comm -23 <(ps -eo user= | sort | uniq) <(who | cut -d' ' -f1 | sort | uniq)
+//or the script
+
+ps -eo rsz= -g root | awk '{sum+=$1} END {if(NR==0){print 0}else{printf("%.2f\n", sum/NR)}}'
+
+//variant
+ps -eo rsz=,group= | awk '$2=="root" {print $1}' | awk '{sum+=$1} END {if(NR==0){print 0}else{printf("%.2f\n", sum/NR)}}'
+
+
+ps -eo pid=,tty=,comm= | awk '$2=="?" {print $3}' | sort | uniq
+//true are also tt, tname
+
+
+ps -eo pid=,ppid= | sort -k 2,2 | awk 'NR == 1 {parent = $2} $2 == parent {count++} $2 != parent {print parent ":" count; parent = $2; count = 1} END {print parent ":" count}'

@@ -1,0 +1,24 @@
+#!/bin/bash
+echo '$0' $0
+
+echo 'Bad $@'
+for file in $@ ; do
+	echo "File ${file}"
+done
+
+
+
+echo 'What you want "$@"'
+for file in "$@" ; do
+	echo "File ${file}"
+done
+
+echo '"$*"'
+for file in "$*" ; do
+	echo "File ${file}"
+done
+
+echo '$*'
+for file in $* ; do
+	echo "File ${file}"
+done

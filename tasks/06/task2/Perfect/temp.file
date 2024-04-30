@@ -1,0 +1,56 @@
+[?1049h[22;0;0t[>4;2m[?1h=[?2004h[?1004h[27m[23m[29m[m[H[2J[?25l[35;1H"-stdin-" 705L, 45546B[1;35r[?12h[?12l[22;2t[22;1t[27m[23m[29m[m[H[2J[1;1H[33m  1 [mOPEN(2)[44CLinux Programmer's Manual[43COPEN(2)[2;1H[33m  2 
+  3 [mNAME
+[33m  4 [m[7Copen, openat, creat - open and possibly create a file
+[33m  5 
+  6 [mSYNOPSIS
+[33m  7 [m[7C#include <sys/types.h>
+[33m  8 [m[7C#include <sys/stat.h>
+[33m  9 [m[7C#include <fcntl.h>
+[33m 10 
+ 11 [m[7Cint open(const char *pathname, int flags);
+[33m 12 [m[7Cint open(const char *pathname, int flags, mode_t mode);
+[33m 13 
+ 14 [m[7Cint creat(const char *pathname, mode_t mode);
+[33m 15 
+ 16 [m[7Cint openat(int dirfd, const char *pathname, int flags);
+[33m 17 [m[7Cint openat(int dirfd, const char *pathname, int flags, mode_t mode);
+[33m 18 
+ 19 [m[7C/* Documented separately, in openat2(2): */
+[33m 20 [m[7Cint openat2(int dirfd, const char *pathname,
+[33m 21 [m[19Cconst struct open_how *how, size_t size);
+[33m 22 
+ 23 [m   Feature Test Macro Requirements for glibc (see feature_test_macros(7)):
+[33m 24 
+ 25 [m[7Copenat():
+[33m 26 [m[11CSince glibc 2.10:
+[33m 27 [m[15C_POSIX_C_SOURCE >= 200809L
+[33m 28 [m[11CBefore glibc 2.10:
+[33m 29 [m[15C_ATFILE_SOURCE
+[33m 30 
+ 31 [mDESCRIPTION
+[33m 32 [m[7CThe  open()  system call opens the file specified by pathname.  If the specified file does not exist, it may optionally[33;1H[33m 33 [m[7C(if O_CREAT is specified in flags) be created by open().
+[33m 34 [m[35;113H1,1[11CTop"-stdin-" 705L, 45546B[35;113H[K[35;113H1,1[11CTop[1;5H[?25h[?25l[35;103H^M[1;5H[35;103H  [2;5H[35;113H2,0-1[2;5H[?25h[?25l[35;103H:[2;5H[35;1H[K[35;1H:[?25h:eqweq[?25l[35;1H[K[2;5H[35;113H2,0-1[9CTop[2;5H[?25h[?25l[35;1HType  :qa!  and press <Enter> to abandon all changes and exit Vim[35;113H[K[35;113H2,0-1[9CTop[2;5H[?25h[?25l[35;113H[K[35;113H2,0-1[9CTop[2;5H[?25h[?25l[35;113H[K[35;113H2,0-1[9CTop[2;5H[?25h[?25l[35;113H[K[35;113H2,0-1[9CTop[2;5H[?25h[?25l[35;113H[K[35;113H2,0-1[9CTop[2;5H[?25h[?25l[35;113H[K[35;113H2,0-1[9CTop[2;5H[?25h[?25l[35;103H^D[2;5H[35;103H  [2;12H[1;34r[1;1H[17M[1;35r[18;1H[33m 35 [m[7CThe return value of open() is a file descriptor, a small, nonnegative integer that is used in subsequent  system  calls[19;1H[33m 36 [m[7C(read(2),  write(2), lseek(2), fcntl(2), etc.) to refer to the open file.  The file descriptor returned by a successful[20;1H[33m 37 [m[7Ccall will be the lowest-numbered file descriptor not currently open for the process.
+[33m 38 
+ 39 [m[7CBy default, the new file descriptor is set to remain open across an execve(2) (i.e.,  the  FD_CLOEXEC  file  descriptor[23;1H[33m 40 [m[7Cflag  described in fcntl(2) is initially disabled); the O_CLOEXEC flag, described below, can be used to change this de‐[24;1H[33m 41 [m[7Cfault.  The file offset is set to the beginning of the file (see lseek(2)).
+[33m 42 
+ 43 [m[7CA call to open() creates a new open file description, an entry in the system-wide table of open files.  The  open  file[27;1H[33m 44 [m[7Cdescription records the file offset and the file status flags (see below).  A file descriptor is a reference to an open[28;1H[33m 45 [m[7Cfile description; this reference is unaffected if pathname is subsequently removed or modified to refer to a  different[29;1H[33m 46 [m[7Cfile.  For further details on open file descriptions, see NOTES.
+[33m 47 
+ 48 [m[7CThe  argument flags must include one of the following access modes: O_RDONLY, O_WRONLY, or O_RDWR.  These request open‐[32;1H[33m 49 [m[7Cing the file read-only, write-only, or read/write, respectively.
+[33m 50 
+ 51 [m[7CIn addition, zero or more file creation flags and file status flags can be bitwise-or'd in flags.   The  file  creation[35;1H[K[35;113H19,8[11C2%[2;12H[?25h[?25l[35;103H^D[2;12H[35;103H  [2;12H[1;34r[1;1H[17M[1;35r[2;12H[46m([44C)[m[18;1H[33m 52 [m[7Cflags are O_CLOEXEC, O_CREAT, O_DIRECTORY, O_EXCL, O_NOCTTY, O_NOFOLLOW, O_TMPFILE, and O_TRUNC.  The file status flags[19;1H[33m 53 [m[7Care all of the remaining flags listed below.  The distinction between these two groups of flags is that the  file  cre‐[20;1H[33m 54 [m[7Cation flags affect the semantics of the open operation itself, while the file status flags affect the semantics of sub‐[21;1H[33m 55 [m[7Csequent I/O operations.  The file status flags can be retrieved and (in some cases) modified; see fcntl(2) for details.[22;1H[33m 56 
+ 57 [m[7CThe full list of file creation flags and file status flags is as follows:
+[33m 58 
+ 59 [m[7CO_APPEND
+[33m 60 [m[14CThe file is opened in append mode.  Before each write(2), the file offset is positioned at the end of the  file,[27;1H[33m 61 [m[14Cas  if  with  lseek(2).   The  modification of the file offset and the write operation are performed as a single[28;1H[33m 62 [m[14Catomic step.
+[33m 63 
+ 64 [m[14CO_APPEND may lead to corrupted files on NFS filesystems if more than one process appends data to a file at once.[31;1H[33m 65 [m[14CThis  is  because NFS does not support appending to a file, so the client kernel has to simulate it, which can't[32;1H[33m 66 [m[14Cbe done without a race condition.
+[33m 67 
+ 68 [m[7CO_ASYNC[35;113H[K[35;113H36,8[11C5%[2;12H[?25h[?25l[35;103H^D[2;12H[35;103H  [2;12H[1;34r[1;1H[17M[1;35r[18;1H[33m 69 [m[14CEnable signal-driven I/O: generate a signal (SIGIO by default, but this can be changed via fcntl(2)) when  input[19;1H[33m 70 [m[14Cor  output becomes possible on this file descriptor.  This feature is available only for terminals, pseudotermi‐[20;1H[33m 71 [m[14Cnals, sockets, and (since Linux 2.6) pipes and FIFOs.  See fcntl(2) for further details.  See also BUGS, below.
+[33m 72 
+ 73 [m[7CO_CLOEXEC (since Linux 2.6.23)
+[33m 74 [m[14CEnable the close-on-exec flag for the new file descriptor.  Specifying this flag permits a program to avoid  ad‐[24;1H[33m 75 [m[14Cditional fcntl(2) F_SETFD operations to set the FD_CLOEXEC flag.
+[33m 76 
+ 77 [m[14CNote  that  the  use of this flag is essential in some multithreaded programs, because using a separate fcntl(2)[27;1H[33m 78 [m[14CF_SETFD operation to set the FD_CLOEXEC flag does not suffice to avoid race conditions where one thread opens  a[28;1H[33m 79 [m[14Cfile  descriptor  and  attempts  to set its close-on-exec flag using fcntl(2) at the same time as another thread[29;1H[33m 80 [m[14Cdoes a fork(2) plus execve(2).  Depending on the order of execution, the race may lead to  the  file  descriptor[30;1H[33m 81 [m[14Creturned by open() being unintentionally leaked to the program executed by the child process created by fork(2).[31;1H[33m 82 [m[14C(This kind of race is in principle possible for any system call that creates a file descriptor  whose  close-on-[32;1H[33m 83 [m[14Cexec  flag  should  be  set, and various other Linux system calls provide an equivalent of the O_CLOEXEC flag to[33;1H[33m 84 [m[14Cdeal with this problem.)
+[33m 85 [m[35;113H[K[35;113H53,8[11C7%[2;12H[?25h[?25l[35;103H^S[2;12H[35;103H  [2;12H[?25h[?25l[35;103H:[2;12H[35;103H[K[35;1H:[?25h[?2004l[>4;m[?1004l[?2004l[?1l>[>4;m[?1049l[23;0;0tVim: Error reading input, exiting...
+Vim: Finished.
+[35;1H[23;2t[23;1tVim: Reading from stdin...

@@ -1,0 +1,149 @@
+cat /etc/passwd | sort -t ':' -k 3
+
+cat /etc/passwd | sort -t ':' -k 3 -n
+
+cat /etc/passwd | cut -d ':' -f 1,5
+
+cat /etc/passwd | cut -c 2-6
+
+cat /etc/passwd | cut -d ':' -f 1,6
+cat /etc/passwd | cut -d ':' -f 1,6 | tr ':' '\t'
+
+cat /etc/passwd | cut -d '/' -f 2
+
+cat /etc/passwd | wc -c
+cat /etc/passwd | wc -m //for characters
+cat /etc/passwd | wc -l
+
+cat /etc/passwd | head -n 12
+cat /etc/passwd | head -c 26
+cat /etc/passwd | head -n -4
+cat /etc/passwd | tail -n 17
+cat /etc/passwd | head -n 49 | tail -n 1
+cat /etc/passwd | head -n 13 | tail -n 1 | tail -c 5 | head -c 4
+
+
+df -P > ~/discSpace.txt
+
+cat discSpace.txt | tail -n +2 | tr -s ' ' | sort -n -t ' ' -k 2
+// starts from 2nd row
+
+
+cat /etc/passwd | cut -d ':' -f 1 > ~/users.txt
+cat /etc/passwd | cut -d ':' -f 1 | egrep [[:upper:]]+
+cat /etc/passwd | cut -d ':' -f 1 | egrep '^[[:upper:]]*$'
+cat /etc/passwd | cut -d ':' -f 1 | tr [a-z] [A-Z]
+cat /etc/passwd | cut -d ':' -f 1 | sed 's/\(.*\)/\U\1/g'
+ 
+
+cat /etc/passwd | egrep $(id -u -n)
+
+cat /etc/passwd | egrep $(id -u -n) -B 2
+cat /etc/passwd | egrep $(id -u -n) -B 2 -A 3
+cat /etc/passwd | egrep $(id -u -n) -B 2 | head -n 1
+
+cat /etc/passwd | egrep [[:alnum:]]*:x:[[:digit:]]*:[[:digit:]]*:[[:alnum:],\ ]*:[[:alnum:]//]*:/bin/bash -v
+
+Second name bigger than 6 symbols >= 7
+
+cat people.txt | egrep '[[:alnum:]]*:x:[[:digit:]]*:[[:digit:]]*:[[:alnum:]]*[[:space:]][[:alnum:]]{7,}[[:punct:]]*:[[:alnum:]//]*:[[:alnum:]/]*'
+
+
+cat people.txt | egrep '[[:alnum:]]*:x:[[:digit:]]*:[[:digit:]]*:[[:alnum:]]*[[:space:]][[:alnum:]]{1,7}[[:punct:]]*:[[:alnum:]//]*:[[:alnum:]/]*'
+
+
+cat people.txt | cut -d ':' -f 5 | egrep '^[[:alpha:]]* [[:alpha:]]{7,}([^[:alpha:]-][[:alpha:]]*)+' | egrep -o '^[[:alpha:] ]*'
+
+cat people.txt | cut -d ':' -f 5 | egrep '^[[:alpha:]]* [[:alpha:]]{1,7}([^[:alpha:]-][[:alpha:]]*)+' | egrep -o '^[[:alpha:] ]*'
+
+
+//REVISITED /////////////////////////////////////////////////////////////
+
+cat /etc/passwd | egrep "^$(id -u -n)"
+
+cat /etc/passwd | grep -E ':/bin/bash$' 
+
+cat people.txt | cut -d ':' -f 5 | grep -E  '^[[:alpha:]]*[[:blank:]][[:alpha:]]{7,}([[:blank:]][[:alpha:]]*)*' | grep -E '^([[:alpha:]+[[:blank:]]*)*' -o
+
+cat people.txt | cut -d ':' -f 5 | grep -E  '^[[:alpha:]]*[[:blank:]][[:alpha:]]{7,}([[:blank:]][[:alpha:]]*)*' -o
+
+2nd try
+cat people.txt | cut -d ':' -f 5 | grep -E '^[[:alpha:]]* [[:alpha:]]{1,5}[^[:alpha:]]' | grep -E  '(^[[:alpha:] -]*)' 
+
+
+// AWK //////////////////////////////////////////////////////////////////
+
+cat data/emp.data | awk 'BEGIN { i = 0 } { i += 1} END { printf("Number of rows = %d\n", i) }'
+
+cat data/emp.data | awk 'END {print NR}' 
+
+cat data/emp.data | awk 'BEGIN { i = 0 } { i += 1} i == 3 { printf("Third row is: %s\n", $0) }'
+
+cat data/emp.data | awk 'NR == 3 {print $0}' 
+
+cat data/emp.data | awk '{ print $(NF-1) }'
+
+cat data/emp.data | awk 'END {print $(NF)}'
+
+cat data/emp.data | awk '$(NF) > 4 { print $0 } '
+
+cat data/emp.data | awk 'NF > 4 { print $0 }' 
+
+cat data/emp.data | awk '{ print NF }' 
+
+cat data/emp.data | awk 'BEGIN { i = 0 } {i += NF } END { print i }' 
+
+cat data/emp.data | awk 'BEGIN { i = 0 } $0 ~ /Beth/ { i++ } END { printf("Rows with Beth: " i "\n") }'
+
+cat data/emp.data | awk 'BEGIN {max=$3} {if(max < $3) max = $3} END {print max}' 
+
+cat data/emp.data | awk 'BEGIN {max=$3; row = $0} max < $3 {max = $3; row = $0} END {print "Max is: " max ", on row: " row}' 
+
+cat data/emp.data | sed -e s/^M.*// | awk 'NF > 0 {print $0}' 
+
+cat data/emp.data | awk '{print $2, $1}'
+
+// switch 1st and 2nd row //
+
+cat data/emp.data | awk '{temp = $1; $1 = $2; $2 = temp; print $0}'
+
+cat data/emp.data | awk 'BEGIN {row = ""} {for(i = 1; i <= NF; i++) {if(i == 1) row = $2; else if(i == 2) row = row" "$1; else row = row" "$i} print row}'
+
+cat data/emp.data | awk 'BEGIN { i = 0 } {i++; $1 = i; print $0}'
+
+cat data/emp.data | awk '{ $1 = NR; print $0}'
+
+cat data/emp.data | awk '{$2 = ""; print $0 }'
+
+cat data/emp.data | LC_NUMERIC="C" awk '{sum = $2 + $3; printf("Sum: %.2f\n", sum)}'
+
+cat data/emp.data | LC_NUMERIC="C" awk 'BEGIN {sum = 0} {sum += $2 + $3} END { printf("Total sum: %.2f\n", sum)}'
+
+cat data/emp.data | awk 'length($0)>17 {print $0}'
+
+// END AWK /////////////////////////////////////////////////////////////
+
+cat /etc/passwd | cut -d ':' -f 4 | egrep $(id -g)
+
+cat /etc/services | egrep '#' | wc -l
+ 
+find -L /bin -type f -exec file {} ';' 2>/dev/null | egrep 'shell script' | wc -l
+
+find ~ -maxdepth 3 -type d -perm 000 2>/dev/null
+
+//script for file
+
+find ~/dir5 -type f -name 'file[123]' -exec wc -lwm {} ';'
+
+find . -type f -name 'file[123]' -exec cat {} ';' | wc -lwm
+
+find . -type f -name 'file[123]' -exec cat {} ';' | wc -l
+
+sed -i 's:\(.*\):\U\1:g' file2
+
+sed -i 's/1//' file1
+
+
+
+
+

@@ -1,0 +1,9 @@
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+s61934:x:1177:504:Mariq Cholakova:/home/SI/s61934:/bin/bash
+s61916:x:1178:504:Simeon Aleksandrov:/home/SI/s61916:/bin/bash
+s61884:x:1179:504:Ruslan Kapelev:/home/SI/s61884:/bin/bash
+s61895:x:1180:504:Zorka Shindova:/home/SI/s61895:/bin/bash
+s61899:x:1182:504:Zorka Ivanova,SI,2kurs,5gr:/home/SI/s61899:/bin/bash
+s81374:x:1117:503:Ivan Kamburov,KN,2kurs,7gr:/home/KN/s81374:/bin/bash
+s81382:x:1118:503:Teodora Cirkova:/home/KN/s81382:/bin/bash
