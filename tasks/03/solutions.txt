@@ -135,7 +135,7 @@ find ~ -maxdepth 3 -type d -perm 000 2>/dev/null
 
 //script for file
 
-find ~/dir5 -type f -name 'file[123]' -exec wc -lwm {} ';'
+find data/dir5 -type f -name 'file[123]' -exec wc -lwm {} ';'
 
 find . -type f -name 'file[123]' -exec cat {} ';' | wc -lwm
 
@@ -224,7 +224,7 @@ find /home/$(id -u\n -n) -mindepth 1 -type f -mmin -15 -printf '%p %T@\n' 2>/dev
 // %T@ is in unix time (seconds); @ can be replaced for any format; %t is normal time
 
 
-cat population.csv | awk -F ',' 'BEGIN {total = 0} $3 == 2016 { total += $4 } END { printf ("%.0f\n", total)}'
+cat data/population.csv | awk -F ',' 'BEGIN {total = 0} $3 == 2016 { total += $4 } END { printf ("%.0f\n", total)}'
 
 
 //check if directoty is empty
@@ -240,19 +240,19 @@ if --> without [] checks the exit status
 
 
 
-ccat population.csv | awk -F ',' 'BEGIN {max = 0; year = ""} $1 == "Bulgaria" && max < $4 {max = $4; year = $3} END {print year}'
+cat data/population.csv | awk -F ',' 'BEGIN {max = 0; year = ""} $1 == "Bulgaria" && max < $4 {max = $4; year = $3} END {print year}'
 
-cat population.csv | awk -F ',' 'BEGIN {max = 0; country = ""} $3 == 2016 && max < $4 {max = $4; country = $1} END {print country}'
+cat data/population.csv | awk -F ',' 'BEGIN {max = 0; country = ""} $3 == 2016 && max < $4 {max = $4; country = $1} END {print country}'
 
-cat population.csv | awk -F ',' 'NR == 1 {min = $4; country = $1} $3 == 2016 && min > $4 {min = $4; country = $1} END {print country}'
+cat data/population.csv | awk -F ',' 'NR == 1 {min = $4; country = $1} $3 == 2016 && min > $4 {min = $4; country = $1} END {print country}'
 
-cat population.csv | awk -F ',' '$3 == 1969 {printf("%s,%d\n",$1,$4)}' | sort -t ',' -n -k 2 -r | awk 'NR == 42 { print $0 }'
+cat data/population.csv | awk -F ',' '$3 == 1969 {printf("%s,%d\n",$1,$4)}' | sort -t ',' -n -k 2 -r | awk 'NR == 42 { print $0 }'
 
-cat population.csv | awk -F ',' '$3 == 1969 {printf("%s,%d\n",$1,$4)}' | sort -t ',' -n -k 2 -r | head -n 42 | tail -n -1 | cut -d ',' -f 1
+cat data/population.csv | awk -F ',' '$3 == 1969 {printf("%s,%d\n",$1,$4)}' | sort -t ',' -n -k 2 -r | head -n 42 | tail -n -1 | cut -d ',' -f 1
 
-cat population.csv | egrep ,$(cat population.csv | awk -F ',' '$3 == 1969 {print $0}' | sort -n -t ',' -k 4 -r | awk -F ',' 'NR == 42 {print $2}') | awk -F ',' '$3 == 2016 {print $4}'
+cat data/population.csv | egrep ,$(cat data/population.csv | awk -F ',' '$3 == 1969 {print $0}' | sort -n -t ',' -k 4 -r | awk -F ',' 'NR == 42 {print $2}') | awk -F ',' '$3 == 2016 {print $4}'
 
-tar -xzvf songs.tar.gz -C ~/Downloads/songs
+tar -xzvf data/songs.tar.gz -C ~/Downloads/songs
 // directory that -C goes into must exist
 // -x --> tells to dearchive
 // -z --> gzip format
@@ -274,10 +274,10 @@ find ~/Downloads/songs -mindepth 1 -printf '%f\n' | sed 's:^\(.*\) - .*:\1:' | s
 
 find /etc -type f -printf '%s %m\n' 2>/dev/null | sort -n -k 1 -r | head -n 1 | cut -d ' ' -f 2 | xargs find ~/Downloads -printf '%f %s %m %c\n' -perm 
 
-cat emails emails2 | egrep  -i '^[a-z0-9_]+([-.][a-z0-9_]+)*@[a-z0-9]+([.-][a-z0-9]+)*(\.[a-z0-9]+)+$'
+cat data/emails data/emails2 | egrep  -i '^[a-z0-9_]+([-.][a-z0-9_]+)*@[a-z0-9]+([.-][a-z0-9]+)*(\.[a-z0-9]+)+$'
 
 cat emp.data | tr -s ' ' | awk -F ' ' '{for(i=NF;i>0;i--){printf("%s ",$i)}printf("\n")}' | column -t
 // novelty
 
 
-cat ssa-input.txt | tail -n +3 | egrep 'Array|physicaldrive|Temperature' | sed 's:^[[:space:]]*::' | sed 's:\(Current\|Maximum\) \(Temperature\) \((C)\):\1\2\3:' | awk 'BEGIN {array = ""} {if( $1 == "Array" ) { array = $2 } if( $1 == "physicaldrive") { printf array"-"$2} if( $1 == "CurrentTemperature(C):" ) { printf " "$2} if( $1 == "MaximumTemperature(C):" ) { printf " "$2"\n"}}'
+cat data/ssa-input.txt | tail -n +3 | egrep 'Array|physicaldrive|Temperature' | sed 's:^[[:space:]]*::' | sed 's:\(Current\|Maximum\) \(Temperature\) \((C)\):\1\2\3:' | awk 'BEGIN {array = ""} {if( $1 == "Array" ) { array = $2 } if( $1 == "physicaldrive") { printf array"-"$2} if( $1 == "CurrentTemperature(C):" ) { printf " "$2} if( $1 == "MaximumTemperature(C):" ) { printf " "$2"\n"}}'
