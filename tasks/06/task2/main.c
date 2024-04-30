@@ -1,41 +1,83 @@
 /*
-	Реализирайте команда head без опции (т.е. винаги да извежда
-	на стандартния изход само първите 10 реда от съдържанието на
-	файл подаден като първи параматър)
-*/
+   Реализирайте команда head без опции (т.е. винаги да извежда
+   на стандартния изход само първите 10 реда от съдържанието на
+   файл подаден като първи параматър)
+   */
 
-#include <fcntl.h>
-#include <stdlib.h>
+
+
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <err.h>
+#include <fcntl.h>
 
-int main(int argc, char* argv[])
+
+int openFile(char * path);
+void closeFile(int fd, char * path);
+
+int openFile(char * path)
 {
-	int fd1;
-	int i = 0;
-	char c;
-
-	if (argc != 2) {
-		write(2, "err\n", 4);
-		exit(1);
+	int fd = open(path, O_RDONLY);
+	if(fd == -1)
+	{
+		err(2, "Error: Opening file %s", path);
 	}
 
-	if ((fd1 = open(argv[1], O_RDONLY)) == -1) {
-		write(2, "File failed to open in read mode\n", 33);
-		exit(1);
+	return fd;
+}
+
+int main(int argc, char ** argv)
+{
+	if(argc != 2)
+	{
+		errx(1, "Error: Invalid number of parameters");
 	}
 
-	while (read(fd1, &c, sizeof(c)) == sizeof(c)) {
-		if (c == '\n') {
-			i=i+1;
+	int fd = openFile(argv[1]);
+
+	uint8_t sym;
+	int16_t read_count = 0;
+
+	const int MAX_ROWS = 10;
+	const uint8_t SEPARATOR = '\n';
+
+	uint16_t countRows = 0;
+
+	while( (read_count = read(fd, &sym, sizeof(sym))) > 0 )
+	{
+		if(sym == SEPARATOR)
+		{
+			countRows++;
 		}
 
-		write(1, &c, 1);
+		if(write(0, &sym, sizeof(sym)) == -1)
+		{
+			err(4, "Error: Writing on stdout");
+		}	
 
-		if (i == 10) {
+		if(countRows >= MAX_ROWS)
+		{
 			break;
 		}
+
 	}
 
-	close(fd1);
+	if(read_count == -1)
+	{
+		err(3, "Error: Reading from file %s", argv[1]);
+	}
+
+	closeFile(fd, argv[1]);
+
 	exit(0);
+}
+
+
+void closeFile(int fd, char * path)
+{
+	if(close(fd) == -1)
+	{
+		err(9, "Error: Closing file %s", path);
+	}
 }

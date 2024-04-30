@@ -1,3 +1,4 @@
+// An example implementation of a shell console.
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +15,7 @@ void executeCommand(char* cmd);
 void executeCommandInProcess(char** cmdArgv);
 
 const char CMD_END = '\n';
+const char STRING_TERMINATOR = '\0';
 const uint16_t MAX_BUFF_SIZE = 4096;
 const uint16_t MAX_NUM_OF_ARGS = 100;
 
@@ -36,13 +38,13 @@ void getCmdAsString(char* buff)
 	while(i < MAX_BUFF_SIZE - 1)
 	{	
 		count_bytes = read(0, &sym, sizeof(sym));
-	
+
 		if(count_bytes == -1)
 		{
 			err(2, "Error while reading user input");
 		}
 
-		if(sym == CMD_END)
+		if(sym == CMD_END || sym == STRING_TERMINATOR)
 		{
 			break;
 		}
@@ -51,18 +53,18 @@ void getCmdAsString(char* buff)
 		i++;
 	}
 
-	buff[i] = '\0';
+	buff[i] = STRING_TERMINATOR;
 }
 
 void convertCmdToArray(char* cmd, char** cmdArgv)
 {
 	uint16_t j = 0;
 	uint16_t startOfNextArgument = 0;
-	for(uint16_t i = 0; cmd[i] != '\0'; i++)
+	for(uint16_t i = 0; cmd[i] != STRING_TERMINATOR; i++)
 	{
 		if(cmd[i] == ' ')
 		{
-			cmd[i] = '\0';
+			cmd[i] = STRING_TERMINATOR;
 			//cmdArgv[j] = &cmd[startOfNextArgument]; //an alternative
 			cmdArgv[j] = cmd + startOfNextArgument;
 			j++;
@@ -79,8 +81,8 @@ void executeCommand(char* cmd)
 {
 	char* cmdArgv[MAX_NUM_OF_ARGS];
 	convertCmdToArray(cmd, cmdArgv);
-		
-	if(strcmp(cmdArgv[1], "exit") == 0)
+
+	if(strcmp(cmdArgv[0], "exit") == 0)
 	{
 		exit(0);
 	}
@@ -106,7 +108,7 @@ void executeCommand(char* cmd)
 		warnx("Command was killed");
 		return;
 	}
-		
+
 }
 
 void executeCommandInProcess(char** cmdArgv)

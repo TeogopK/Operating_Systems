@@ -1,8 +1,8 @@
 /*
-	Реализирайте команда head без опции (т.е. винаги да извежда
-	на стандартния изход само първите 10 реда от съдържанието на
-	файл подаден като първи параматър)
-*/
+   Реализирайте команда head без опции (т.е. винаги да извежда
+   на стандартния изход само първите 10 реда от съдържанието на
+   файл подаден като първи параматър)
+   */
 
 /*
  * Upgraded version
@@ -42,12 +42,12 @@ const char* MAX_ROWS_OPTION_KEY = "-n";
 int main(int argc, char ** argv)
 {
 	uint16_t maxRows = MAX_ROWS_DEFAULT_VALUE;
-	
+
 	if(argc == 1)
 	{
 		writeFromFD(0, maxRows);
 	}
-	
+
 	else if(argc == 2)
 	{
 		if(strcmp(argv[1], MAX_ROWS_OPTION_KEY) == 0)
@@ -108,9 +108,8 @@ void writeFromFD(int fd, uint16_t maxRows)
 
 	uint16_t countRows = 0;
 
-	ssize_t
 	while( (read_count = read(fd, &sym, sizeof(sym))) > 0 )
-		
+
 	{
 		if(sym == SEPARATOR)
 		{

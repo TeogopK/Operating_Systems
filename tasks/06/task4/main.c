@@ -1,8 +1,12 @@
 /*
-	Реализирайте команда swap, разменяща съдържанието на два файла, подадени като
-	входни параметри. Приемаме, че двата файла имат еднакъв брой символи. Може да
-	модифицирате решението, да работи и когато нямат еднакъв брой символи.
-*/
+   Реализирайте команда swap, разменяща съдържанието на два файла, подадени като
+   входни параметри. Приемаме, че двата файла имат еднакъв брой символи. Може да
+   модифицирате решението, да работи и когато нямат еднакъв брой символи.
+   */
+
+// answer to modification:
+// close the file and then truncate open
+// var2 use ftruncate
 
 #include <stdio.h>
 #include <err.h>
@@ -27,8 +31,7 @@ int main (int argc, char* argv[])
 	int fd2;
 	fd2 = open(argv[2], O_RDWR);
 	if (fd2 == -1) {
-// FIXME
-//		close(fd1);
+		// its ok to have no close in the exception path
 		err(3, "%s", argv[2]);
 	}
 
@@ -51,7 +54,7 @@ int main (int argc, char* argv[])
 		err(2, "Error while reading");
 	}
 
-// FIXME
+	// FIXME
 	lseek(fd1, 0, SEEK_SET);
 
 	while ((read_size = read(fd2, &c, sizeof(c))) > 0 ) {
@@ -63,7 +66,7 @@ int main (int argc, char* argv[])
 		err(2, "Error while reading");
 	}
 
-// FIXME
+	// FIXME
 	lseek(fd2, 0, SEEK_SET);
 	lseek(fd3, 0, SEEK_SET);
 
