@@ -1,7 +1,7 @@
 #!/bin/bash
 
 (
-	echo "TEST1"
+	echo "TEST1: No IFS"
 	arr=($(find . -type f | egrep -v './.*\.'))
 
 	for i in "${arr[@]}"
@@ -11,7 +11,7 @@
 )
 
 (
-	echo "TEST2"
+	echo "TEST2: With IFS"
 
 	OLD_IFS="${IFS}"	
 	IFS=$'\n'
