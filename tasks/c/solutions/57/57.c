@@ -18,9 +18,9 @@ int readOpen(char* file);
 int checkSize(int fd, char* file, int mult);
 
 int readOpen(char* file) {
-	
+
 	int fd = open(file, O_RDONLY);
-	
+
 	if(fd < 0) {
 		err(2, "Error while opening file %s", file);
 	}
@@ -29,9 +29,9 @@ int readOpen(char* file) {
 }
 
 int writeOpen(char* file) {
-	
+
 	int fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0666);
-	
+
 	if(fd < 0) {
 		err(2, "Error while opening file %s", file);
 	}
