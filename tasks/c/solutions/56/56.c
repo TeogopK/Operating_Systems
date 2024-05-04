@@ -44,8 +44,8 @@ int main(int argc, char** argv)
 		err(4, "Error while lseeking in file %s", argv[1]);
 	}
 
-//	close(fd);
-//	open(argv[1], O_WRONLY | O_TRUNC);
+	//	close(fd);
+	//	open(argv[1], O_WRONLY | O_TRUNC);
 
 	uint8_t i = 0;
 	do

@@ -1,0 +1,7 @@
+find / -user "$(id -u -n)" 2>/dev/null | wc -l
+
+find . -type f -printf '%n\t%p\n' 2>/dev/null | sort -t $'\t' -nr -k 1 | head -n 5 | cut -d $'\t' -f2 | xargs realpath
+#awk -F '\t' {print $2}
+
+cat input_passwd | awk -F ':' '{printf $5":"$6"\n"}' | awk -F ':' '$2 ~ /^\/home\/SI\// {print $1}' | egrep -o '^([[:alpha:]]+[ ]*)+' | awk -F ' ' '$2 ~ /a$/ {print $1}' | sort | uniq -c | sed -E 's/^[[:space:]]*//g' | sort -t ' ' -nr -k 1 | head -n 1
+

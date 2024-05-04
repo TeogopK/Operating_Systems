@@ -20,9 +20,9 @@ int main(int argc, char ** argv)
 	}
 
 	char* file_name = argv[1];
-	
+
 	// also ok
-	
+
 	// int fd;
 	// if(( fd = open(argv[1], O_RDWR) == -1 ))
 	// {
@@ -38,8 +38,8 @@ int main(int argc, char ** argv)
 	}
 
 	uint8_t buf; //unsigned int 8 bits
-		      
-	// THERE IS NOT CHECK!
+
+	// THERE IS NO CHECK!
 
 	// can be 1 -> byte, instead of sizeof()	
 	// while(read(fd, &buf, sizeof(buf)) > 0) {
@@ -54,11 +54,11 @@ int main(int argc, char ** argv)
 	if(bytes_count < 0){
 		err(3, "ERRROR: Reading from file");
 	}
-	
+
 	lseek(fd, 0, SEEK_SET);
-	
+
 	for(uint16_t i = 0; i < 256; i++) {
-	// for(uint8_t i = 0; i < 256; i++) { // cycle is never ending
+		// for(uint8_t i = 0; i < 256; i++) { // cycle is never ending
 		uint8_t temp = i;
 
 		for(int j = 0 ; j < bytes[i]; j++) {
@@ -73,4 +73,4 @@ int main(int argc, char ** argv)
 
 	// exit(0);
 	return 1;
-}
+	}
