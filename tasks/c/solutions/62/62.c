@@ -63,7 +63,7 @@ void loadData(const int fd, const char* file, uint8_t* buff) {
 	while( (read_bytes = read(fd, &symb, sizeof(symb))) > 0) {
 		buff[i] = symb;
 		i++;
-		
+
 		if(i >= MAX_BUFF_SIZE) {
 			errx(6, "Error buffer overflow while reading from file %s", file);
 		}
@@ -121,7 +121,7 @@ int main(int argc, char** argv) {
 
 	uint8_t buff [MAX_BUFF_SIZE];
 	// maybe use malloc??	uint8_t* buff = (uint8_t*)malloc(sizeof(uint8_t) * origin_size);
-	
+
 	loadData(origin_fd, argv[2], buff);
 	patchData(patch_fd, argv[1], buff, origin_size);
 
