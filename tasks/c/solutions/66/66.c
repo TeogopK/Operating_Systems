@@ -96,13 +96,11 @@ void flagDLogic(const char del, const int start, const int end) {
 			writeSymb(symb);
 			i = 1;
 		}
-
+		else if(symb == del) {
+			i++;
+		}
 		else if(i >= start && i <= end) {
 			writeSymb(symb);
-		}
-
-		if(symb == del) {
-			i++;
 		}
 	}
 
@@ -127,7 +125,7 @@ int main(int argc, char** argv) {
 			errx(2, "Invalid flag option %s", argv[1]);
 		}
 		getFlagValue(argv[2], values);
-		
+
 		flagCLogic(values[0], values[1]);
 	}
 
