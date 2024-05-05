@@ -199,7 +199,7 @@ int main(int argc, char** argv) {
 	lengths[1] = length - lengths[0];
 
 	int fds[2];
-	const char* tempFiles[2] = {"file1.bin", "file2.bin"};
+	const char* tempFiles[2] = {"temp1.bin", "temp2.bin"};
 
 	for(int i = 0; i < 2; i++) {
 		loadHalfData(fd_input, argv[1], arr, lengths[i]);
